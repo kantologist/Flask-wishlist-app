@@ -1,0 +1,68 @@
+<div class="products">
+  <ul>
+  {% for product in products %}
+  <li class="product">
+    <div class="profile-thumbnail">
+        <img class="img-rounded profile-thumbnail"
+        src=" {{ product.gravatar() }}">
+      </div>
+      <div class="product-name">
+          {{ product.name }}
+      </div>
+      <div class="product-description">
+          {{ product.description }}
+        </div>
+        {% if current_user.is_authenticated and current_user.confirmed%}
+        {% if product in wished %}
+        <div class="product-footer">
+              <span class="label label-warning"><a
+                href="{{ url_for('.remove_from_wishlist',
+                product_id=product.id
+                ) }}">Remove from wish list</a></span>
+        </div>
+        {% else %}
+        <div class="product-footer dropdown">
+                    <a data-toggle="dropdown"  href="#">
+                        <span></span>
+                        add to wishlist <strong class="caret"></strong>
+                        </a>
+                        <ul class="dropdown-menu" role="menu"
+                         aria-labelledby="dLabel">
+                          {% for wishlist in wishlists %}
+                            <li>
+                              <a href="{{url_for('.add_to_wishlist',
+                              product_id = product.id,
+                              wishlist = wishlist.name) }}">
+                              {{ wishlist.name }}
+                              {% if wishlist.name != 'default' %}
+                              <button type="button"
+                              class="btn btn-default btn-sm">
+                              <a
+                              href="{{ url_for('.remove_wishlist',
+                              wishlist=wishlist.name
+                              ) }} ">
+                              remove <span class="glyphicon glyphicon-remove">
+                              </span>
+                            </a>
+                            </button>
+                            {% endif %}
+                          </a></li>
+                            <li class="divider"></li>
+                            {% endfor %}
+                            <li><a href="{{ url_for('main.add_wishlist') }}">
+                              Create a new wishlist
+                            </li>
+                        </ul>
+        </div>
+        {% endif %}
+        {% endif %}
+        <div class="product-footer">
+            <a href="{{ url_for('.product', id=product.id) }}">
+              <span class="label label-default">More Info</span>
+            </a>
+        </div>
+      <div class="product-date ">{{ moment(product.timestamp).fromNow() }}</div>
+  </li>
+  {% endfor %}
+</ul>
+</div>
