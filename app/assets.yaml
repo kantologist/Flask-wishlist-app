@@ -1,0 +1,7 @@
+js-all:
+  filters: jsmin
+  output: gen/packed.js
+  contents:
+    - jquery.js
+    - base.js
+    - widget.js

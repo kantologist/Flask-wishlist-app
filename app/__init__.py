@@ -6,8 +6,11 @@ from flask_mail import Mail
 from config import config
 from flask_login import LoginManager
 from flask_pagedown import PageDown
+from flask_assets import Environment, Bundle
+import os
 
 
+appdir = os.path.abspath(os.path.dirname(__file__))
 bootstrap = Bootstrap()
 pagedown = PageDown()
 mail = Mail()
@@ -28,6 +31,9 @@ def create_app(config_name):
     db.init_app(app)
     login_manager.init_app(app)
     pagedown.init_app(app)
+    assets = Environment(app)
+    assets.from_yaml(os.path.join(appdir, 'assets.yaml'))
+    assets.init_app(app)
 
     from main import main as main_blueprint
     app.register_blueprint(main_blueprint)

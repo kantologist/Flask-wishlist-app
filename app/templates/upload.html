@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Wishy - upload Product{% endblock %}
+{% block page_content %}
+<div class="page-header">
+  <h1>Upload Product File</h1>
+</div>
+<div class="col-md-4">
+  <p>allowed extensions are xls and xlsx</p>
+    <form action="" method=post enctype=multipart/form-data>
+      <p><input type=file name=file>
+         <input type=submit value=Upload>
+    </form>
+</div>
+{% endblock %}

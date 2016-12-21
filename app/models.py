@@ -192,6 +192,46 @@ class Product(db.Model):
     def __repr__(self):
         return '<Product %r>' % self.name
 
+
+
+    @staticmethod
+    def populate_from_file(filepath, jsonpath=None):
+        from xlrd import open_workbook
+        from collections import OrderedDict
+        import simplejson as json
+
+        wb = open_workbook(filepath)
+        s = wb.sheet_by_index(0)
+
+        products = []
+
+        for rownum in range(1, s.nrows):
+            product = OrderedDict()
+            row_values = s.row_values(rownum)
+            product["name of product"] = row_values[0]
+            product["description"] = row_values[1]
+            product["image url"] = row_values[2]
+
+
+
+            if Product.query.filter_by(image_url=row_values[2]).first() ==\
+                                                        None:
+                p = Product(name=row_values[0],
+                            description=row_values[1],
+                            image_url=row_values[2])
+                db.session.add(p)
+            try:
+                db.session.commit()
+            except IntegrityError:
+                db.session.rollback()
+            products.append(product)
+        j =json.dumps(products)
+
+        if jsonpath != None:
+            with open(jsonpath, "w") as f:
+                f.write(j)
+
+
     @staticmethod
     def generate_fake(count=100):
         from random import seed, randint, choice

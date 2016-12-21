@@ -11,6 +11,7 @@ class Config:
     FLASKY_ADMIN = os.environ.get('FLASKY_ADMIN')
     FLASKY_POST_PER_PAGE = 10
     FLASKY_COMMENTS_PER_PAGE = 10
+    UPLOAD_FOLDER = basedir
 
 
     @staticmethod
@@ -34,7 +35,7 @@ class TestingConfig(Config):
         'sqlite:////' + os.path.join(basedir, 'data-test.sqlite')
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI') 
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI')
 
 
 config = {

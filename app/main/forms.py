@@ -55,4 +55,4 @@ class CommentForm(Form):
 
 class WishForm(Form):
     name = StringField('name of wishlist', validators=[Length(0, 64)])
-    submit = SubmitField('Submit')
+    submit = SubmitField('Submit')    
